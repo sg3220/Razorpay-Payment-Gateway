@@ -10,7 +10,8 @@ Hello, Welcome To The Documentation Of My Razorpay-Payment-Gateway.
 ## Razorpay-Methods Used in Controllers:
 
 > **createOrder Function:** `Creates a new order with Razorpay and sends order details back to the client.`  <BR>
-> 'const createOrder = async (Req, Res) => {
+
+const createOrder = async (Req, Res) => {
   let Body = '';
   Req.on('data', (dataChunk) => {
     Body = Body + dataChunk;
@@ -40,7 +41,8 @@ Hello, Welcome To The Documentation Of My Razorpay-Payment-Gateway.
     );
     Res.end();
   });
-> };
+};
+
 <BR>
 
 > **checkOrder Function:** `Verifies the order's authenticity using HMAC.`  <BR>
