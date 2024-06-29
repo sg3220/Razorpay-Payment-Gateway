@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend For Handling Payments",
+  "main": "Server.JS",
+  "scripts": {
+    "Dev": "Nodemon Server.JS",
+    "start": "Node Server.JS"
+  },
+  "author": "Siddharth Ghosh",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "razorpay": "^2.9.2"
+  }
+}

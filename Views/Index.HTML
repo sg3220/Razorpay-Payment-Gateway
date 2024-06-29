@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Style.CSS">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <title>Payment Page</title>
+</head>
+
+<body>
+    <form class="wrapper" onsubmit="return handler()">
+
+        <input type="text" placeholder="First Name" id="firstName" class="inputBox" name="firstName" />
+
+        <input type="text" placeholder="Last Name" id="lastName" class="inputBox" name="lastName" />
+
+        <input type="email" placeholder="Email" id="email" class="inputBox" name="email" />
+
+        <input type="text" placeholder="Phone Number(+91)" id="contact" class="inputBox" name="contact" />
+
+        <input type="number" placeholder="Amount(In ₹)" id="amount" class="inputBox" name="amount" />
+
+        <input type="submit" value="Create Order" class="inputBox submitButton" />
+    </form>
+    <script>
+        const handler = () => {
+            const personDetails = new Object;
+            personDetails.firstName = document.getElementById("firstName").value;
+            personDetails.lastName = document.getElementById("lastName").value;
+            personDetails.email = document.getElementById("email").value;
+            personDetails.contact = document.getElementById("contact").value;
+            personDetails.amount = document.getElementById("amount").value;
+
+            fetch('http://127.0.0.1:4000/Payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(personDetails)
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    const options = {
+                        "key": data['RAZORPAY_KEY_ID'],
+                        "amount": data['amount'],
+                        "currency": data['currency'],
+                        "name": "Bharti & Sons",
+                        "description": "ABC",
+                        "image": "https://res.cloudinary.com/djywrhroe/image/upload/v1703589332/Payment-Gateway/l0fgohpiuycszlyl5snv.png",
+                        "order_id": data['id'],
+                        "callback_url": "http://127.0.0.1:4000/Success",
+                        "prefill": {
+                            "name": data['name'],
+                            "email": data['email'],
+                            "contact": data['contact'],
+                        },
+                        "theme": {
+                            "color": "#000000"
+                        }
+                    }
+                    console.log(options);
+                    const rzp1 = new Razorpay(options);
+                    rzp1.open();
+                    e.preventDefault();
+                })
+                .catch((error) => {
+                    console.error('Fetch error:', error);
+                });
+
+            return false;
+        }
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+
+</html>
